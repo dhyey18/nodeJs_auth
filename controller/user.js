@@ -12,9 +12,10 @@ function handleUserSignUp(req, res) {
 async function handleUserSignIn(req, res) {
     const { name, password } = req.body
     const user = await userService.getUserForSigin(name, password)
-    const sessionId = uuidv4()
-    setUser(sessionId, user)
-    res.cookie('uid', sessionId)
+
+    const authToken = setUser(user[0])
+
+    res.send({ authToken })
 
     if (user.length > 0) {
         res.send({ msg: "User Login success" })
